@@ -5,42 +5,43 @@ using namespace std;
 
 int R, C;
 int area[101][101];
-int L[101][101] = { 1 };
+int L[101][101];
 
 struct Lx {
-	int i, j, height;
+	int r, c, height;
 	bool operator < (const Lx& l) const { return height > l.height; }
-	Lx(int ii = 0, int jj = 0, int h = 0) :i(ii), j(jj), height(h) {}
+	Lx(int rr = 0, int cc = 0, int h = 0) :r(rr), c(cc), height(h) {}
 };
 priority_queue<Lx> qLx;
 
 int main() {
 	int result = 0;
 	cin >> R >> C;
-	//memset(L, 1, sizeof(L));
+	memset(L, 1, sizeof(int)*101*101);
 	for (int i = 0; i < R; i++) {
 		for (int j = 0; j < C; j++) {
 			cin >> area[i][j];
+			L[i][j] = 1;
 			qLx.push(Lx(i, j, area[i][j]));
 		}
 	}
 	Lx lx;
 	while (!qLx.empty()) {
 		lx = qLx.top();
-		int max_s = L[lx.i][lx.j];
-		if (lx.i > 0)	//上
-			if (lx.height > area[lx.i - 1][lx.j] && max_s < L[lx.i - 1][lx.j] + 1)
-				max_s = L[lx.i - 1][lx.j] + 1;
-		if (lx.i < R - 1)	//下
-			if (lx.height > area[lx.i + 1][lx.j] && max_s < L[lx.i + 1][lx.j] + 1)
-				max_s = L[lx.i + 1][lx.j] + 1;
-		if (lx.j > 0)	//左
-			if (lx.height > area[lx.i][lx.j - 1] && max_s < L[lx.i][lx.j - 1] + 1)
-				max_s = L[lx.i][lx.j - 1] + 1;
-		if (lx.j < C - 1)	//右
-			if (lx.height > area[lx.i][lx.j + 1] && max_s < L[lx.i][lx.j + 1] + 1)
-				max_s = L[lx.i][lx.j + 1] + 1;
-		L[lx.i][lx.j] = max_s;
+		int max_s = L[lx.r][lx.c];
+		if (lx.r > 0)	//上
+			if (lx.height > area[lx.r - 1][lx.c] && max_s < L[lx.r - 1][lx.c] + 1)
+				max_s = L[lx.r - 1][lx.c] + 1;
+		if (lx.r < R - 1)	//下
+			if (lx.height > area[lx.r + 1][lx.c] && max_s < L[lx.r + 1][lx.c] + 1)
+				max_s = L[lx.r + 1][lx.c] + 1;
+		if (lx.c > 0)	//左
+			if (lx.height > area[lx.r][lx.c - 1] && max_s < L[lx.r][lx.c - 1] + 1)
+				max_s = L[lx.r][lx.c - 1] + 1;
+		if (lx.c < C - 1)	//右
+			if (lx.height > area[lx.r][lx.c + 1] && max_s < L[lx.r][lx.c + 1] + 1)
+				max_s = L[lx.r][lx.c + 1] + 1;
+		L[lx.r][lx.c] = max_s;
 		if (result < max_s)
 			result = max_s;
 		qLx.pop();
